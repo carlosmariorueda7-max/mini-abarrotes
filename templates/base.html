@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Mini Abarrotes{% endblock %}</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <header class="encabezado">
+        <div class="contenedor encabezado-contenido">
+            <div>
+                <h1>🛒 Mini Abarrotes</h1>
+                <p>Sistema de administración de tu tienda</p>
+            </div>
+
+            <span class="estado">Sistema activo</span>
+        </div>
+    </header>
+
+    <nav class="navegacion">
+        <div class="contenedor enlaces">
+            <a href="{{ url_for('inicio') }}">Inicio</a>
+            <a href="{{ url_for('productos') }}">Productos e inventario</a>
+            <a href="{{ url_for('nuevo_producto') }}">Registrar producto</a>
+        </div>
+    </nav>
+
+    <main class="contenedor contenido">
+
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+            {% if mensajes %}
+                <div class="mensajes">
+                    {% for categoria, mensaje in mensajes %}
+                        <div class="mensaje mensaje-{{ categoria }}">
+                            {{ mensaje }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <footer class="pie">
+        Mini Abarrotes · Sistema de gestión de tienda
+    </footer>
+
+</body>
+</html>

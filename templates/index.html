@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio | Mini Abarrotes{% endblock %}
+
+{% block content %}
+
+<section class="bienvenida">
+    <h2>Panel principal</h2>
+    <p class="texto-secundario">
+        Resumen general de tu tienda.
+    </p>
+</section>
+
+<section class="tarjetas">
+
+    <article class="tarjeta">
+        <h3>Ventas de hoy</h3>
+        <p class="valor">
+            ${{ "%.2f"|format(ventas_hoy) }}
+        </p>
+        <p class="texto-secundario">
+            Próximamente disponible
+        </p>
+    </article>
+
+    <article class="tarjeta">
+        <h3>Productos activos</h3>
+        <p class="valor">{{ total_productos }}</p>
+        <p class="texto-secundario">
+            Productos disponibles en el inventario
+        </p>
+    </article>
+
+    <article class="tarjeta">
+        <h3>Productos con poco stock</h3>
+        <p class="valor">{{ productos_stock_bajo }}</p>
+        <p class="texto-secundario">
+            Productos con 5 unidades o menos
+        </p>
+    </article>
+
+</section>
+
+<section class="seccion">
+    <div class="pagina-titulo">
+        <div>
+            <h2>Administración de productos</h2>
+            <p class="texto-secundario">
+                Gestiona los productos y las existencias de tu tienda.
+            </p>
+        </div>
+    </div>
+
+    <div class="modulos">
+
+        <article class="modulo">
+            <h3>📦 Productos e inventario</h3>
+
+            <p>
+                Consulta las existencias, busca productos y modifica
+                sus precios y cantidades.
+            </p>
+
+            <a class="boton boton-principal"
+               href="{{ url_for('productos') }}">
+                Administrar inventario
+            </a>
+        </article>
+
+        <article class="modulo">
+            <h3>➕ Registrar producto</h3>
+
+            <p>
+                Agrega nuevos productos con su nombre, categoría,
+                precio y existencias iniciales.
+            </p>
+
+            <a class="boton boton-principal"
+               href="{{ url_for('nuevo_producto') }}">
+                Agregar producto
+            </a>
+        </article>
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Inventario | Mini Abarrotes{% endblock %}
+
+{% block content %}
+
+<section class="pagina-titulo">
+    <div>
+        <h2>Productos e inventario</h2>
+        <p class="texto-secundario">
+            Consulta y administra los productos de tu tienda.
+        </p>
+    </div>
+
+    <a class="boton boton-principal"
+       href="{{ url_for('nuevo_producto') }}">
+        + Registrar producto
+    </a>
+</section>
+
+<section class="seccion">
+
+    <form method="GET"
+          action="{{ url_for('productos') }}"
+          class="buscador">
+
+        <input
+            type="search"
+            name="buscar"
+            placeholder="Buscar por nombre o categoría..."
+            value="{{ busqueda }}"
+        >
+
+        <button type="submit" class="boton boton-principal">
+            Buscar
+        </button>
+
+        {% if busqueda %}
+            <a class="boton boton-secundario"
+               href="{{ url_for('productos') }}">
+                Limpiar
+            </a>
+        {% endif %}
+
+    </form>
+
+    <div class="tabla-contenedor">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Precio</th>
+                    <th>Existencias</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for producto in productos %}
+
+                    <tr>
+                        <td>{{ producto.id }}</td>
+
+                        <td>
+                            <strong>{{ producto.nombre }}</strong>
+                        </td>
+
+                        <td>
+                            {{ producto.categoria or "Sin categoría" }}
+                        </td>
+
+                        <td>
+                            ${{ "%.2f"|format(producto.precio) }}
+                        </td>
+
+                        <td>
+                            {% if producto.stock <= 5 %}
+                                <span class="etiqueta-stock stock-bajo">
+                                    {{ producto.stock }} unidades
+                                </span>
+                            {% else %}
+                                <span class="etiqueta-stock stock-normal">
+                                    {{ producto.stock }} unidades
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div class="acciones">
+
+                                <a
+                                    class="boton boton-editar"
+                                    href="{{ url_for(
+                                        'editar_producto',
+                                        producto_id=producto.id
+                                    ) }}"
+                                >
+                                    Editar
+                                </a>
+
+                                <form
+                                    method="POST"
+                                    action="{{ url_for(
+                                        'desactivar_producto',
+                                        producto_id=producto.id
+                                    ) }}"
+                                    onsubmit="return confirm(
+                                        '¿Deseas desactivar este producto?'
+                                    );"
+                                >
+                                    <button
+                                        type="submit"
+                                        class="boton boton-peligro"
+                                    >
+                                        Desactivar
+                                    </button>
+                                </form>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                {% else %}
+
+                    <tr>
+                        <td colspan="6" class="sin-productos">
+                            {% if busqueda %}
+                                No se encontraron productos con esa búsqueda.
+                            {% else %}
+                                Todavía no hay productos registrados.
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <p class="texto-secundario">
+        Productos encontrados: {{ productos|length }}
+    </p>
+
+</section>
+
+{% endblock %}

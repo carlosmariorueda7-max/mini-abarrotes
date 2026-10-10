@@ -1,0 +1,20 @@
+# Entornos virtuales
+venv/
+.venv/
+
+# Variables de entorno y credenciales
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Configuración de herramientas
+.vscode/
+.idea/
+
+# Archivos del sistema
+.DS_Store
